@@ -9,12 +9,71 @@
   <body>
     <div class="game-container">
       <h1>치이카와 배구</h1>
-      <canvas id="gameCanvas" width="800" height="400"></canvas>
-      <div class="controls">
-        <p>조작법: ← → 방향키로 이동, 스페이스바로 점프, R키로 게임 재시작</p>
-        <p>
-          점수: <span id="playerScore">0</span> - <span id="enemyScore">0</span>
-        </p>
+
+      <!-- 메뉴 화면 -->
+      <div id="menuScreen" class="menu-screen">
+        <div class="menu-buttons">
+          <button id="singlePlayerBtn" class="game-mode-btn">
+            🤖 혼자서 플레이하기
+          </button>
+          <button id="twoPlayerBtn" class="game-mode-btn">
+            👥 둘이서 플레이하기
+          </button>
+        </div>
+        <div class="menu-info">
+          <p>🎮 치이카와와 하치와레의 배구 대결!</p>
+          <p>먼저 5점을 얻는 플레이어가 승리합니다.</p>
+        </div>
+      </div>
+
+      <!-- 게임 화면 -->
+      <div id="gameScreen" class="game-screen hidden">
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+        <div class="controls">
+          <div id="gameControls" class="game-controls">
+            <!-- 1P 모드 조작법 -->
+            <div id="singlePlayerControls" class="control-info hidden">
+              <p>
+                <strong>플레이어 1 (하치와레):</strong> ← → 방향키로 이동,
+                스페이스바로 점프
+              </p>
+              <p><strong>적 (치이카와):</strong> AI 자동 제어</p>
+            </div>
+            <!-- 2P 모드 조작법 -->
+            <div id="twoPlayerControls" class="control-info hidden">
+              <p>
+                <strong>플레이어 1 (하치와레):</strong> ← → 방향키로 이동,
+                스페이스바로 점프
+              </p>
+              <p>
+                <strong>플레이어 2 (치이카와):</strong> A D 키로 이동, W 키로
+                점프
+              </p>
+            </div>
+            <p>R키로 게임 재시작 | ESC키로 메뉴로 돌아가기</p>
+          </div>
+          <div class="score-display">
+            <span class="player-name">하치와레</span>
+            <span class="score">
+              <span id="playerScore">0</span> - <span id="enemyScore">0</span>
+            </span>
+            <span class="enemy-name">치이카와</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 승리 화면 -->
+      <div id="winScreen" class="win-screen hidden">
+        <div class="win-message">
+          <h2 id="winnerText">승자: 하치와레!</h2>
+          <p id="winScoreText">최종 점수: 5 - 3</p>
+          <div class="win-buttons">
+            <button id="playAgainBtn" class="game-mode-btn">다시 플레이</button>
+            <button id="backToMenuBtn" class="game-mode-btn">
+              메뉴로 돌아가기
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <script src="script.js"></script>

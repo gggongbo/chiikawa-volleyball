@@ -55,6 +55,153 @@ h1 {
   color: #2196f3;
 }
 
+/* 화면 상태 관리 */
+.hidden {
+  display: none !important;
+}
+
+/* 메뉴 화면 */
+.menu-screen {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.menu-buttons {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.game-mode-btn {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  min-width: 250px;
+}
+
+.game-mode-btn:hover {
+  background: linear-gradient(135deg, #45a049, #4caf50);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.game-mode-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.menu-info {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+.menu-info p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* 게임 화면 */
+.game-screen {
+  text-align: center;
+}
+
+.game-controls {
+  margin: 10px 0;
+}
+
+.control-info {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.control-info p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.score-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px 20px;
+  border-radius: 15px;
+  margin: 10px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.player-name,
+.enemy-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.score {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2196f3;
+}
+
+#playerScore,
+#enemyScore {
+  font-size: 28px;
+}
+
+/* 승리 화면 */
+.win-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 1000;
+}
+
+.win-message h2 {
+  color: #4caf50;
+  margin-bottom: 15px;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.win-message p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+.win-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.win-buttons .game-mode-btn {
+  min-width: 150px;
+  font-size: 16px;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 850px) {
   .game-container {
@@ -69,5 +216,26 @@ h1 {
 
   h1 {
     font-size: 1.5rem;
+  }
+
+  .game-mode-btn {
+    min-width: 200px;
+    font-size: 16px;
+    padding: 12px 25px;
+  }
+
+  .score-display {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .player-name,
+  .enemy-name {
+    font-size: 14px;
+  }
+
+  .win-buttons {
+    flex-direction: column;
+    align-items: center;
   }
 }

@@ -7,13 +7,28 @@ const GRAVITY = 0.6;
 const GROUND_Y = canvas.height - 50;
 const NET_HEIGHT = 150;
 const BALL_BOUNCE = 0.8;
+const WIN_SCORE = 5;
 
-// 게임 상태
+// 게임 상태 관리
+let gameMode = "menu"; // 'menu', 'singlePlayer', 'twoPlayer'
 let gameState = {
   playerScore: 0,
   enemyScore: 0,
-  ballServe: "player", // 'player' 또는 'enemy'
+  ballServe: "player",
+  isGameRunning: false,
+  winner: null,
 };
+
+// 화면 요소 참조
+const menuScreen = document.getElementById("menuScreen");
+const gameScreen = document.getElementById("gameScreen");
+const winScreen = document.getElementById("winScreen");
+const singlePlayerBtn = document.getElementById("singlePlayerBtn");
+const twoPlayerBtn = document.getElementById("twoPlayerBtn");
+const singlePlayerControls = document.getElementById("singlePlayerControls");
+const twoPlayerControls = document.getElementById("twoPlayerControls");
+const playAgainBtn = document.getElementById("playAgainBtn");
+const backToMenuBtn = document.getElementById("backToMenuBtn");
 
 // 이미지 로드
 const images = {
@@ -40,7 +55,7 @@ const player = {
   side: "left",
 };
 
-// 적 객체 (AI)
+// 적/2P 플레이어 객체
 const enemy = {
   x: canvas.width - 160,
   y: GROUND_Y - 60,
@@ -53,6 +68,9 @@ const enemy = {
   onGround: true,
   side: "right",
   aiTimer: 0,
+  // 2P 모드에서는 speed가 player와 동일하게 조정됨
+  playerSpeed: 5,
+  playerJumpPower: 15,
 };
 
 // 공 객체
@@ -78,13 +96,89 @@ const keys = {};
 
 document.addEventListener("keydown", (e) => {
   keys[e.key] = true;
+  keys[e.key.toLowerCase()] = true;
+
+  // ESC키로 메뉴로 돌아가기
+  if (e.key === "Escape" && gameMode !== "menu") {
+    showMenu();
+  }
 });
 
 document.addEventListener("keyup", (e) => {
   keys[e.key] = false;
+  keys[e.key.toLowerCase()] = false;
 });
 
-// 플레이어 업데이트
+// 화면 전환 함수들
+function showMenu() {
+  gameMode = "menu";
+  gameState.isGameRunning = false;
+  menuScreen.classList.remove("hidden");
+  gameScreen.classList.add("hidden");
+  winScreen.classList.add("hidden");
+}
+
+function showGame(mode) {
+  gameMode = mode;
+  menuScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+  winScreen.classList.add("hidden");
+
+  // 조작법 표시 전환
+  if (mode === "singlePlayer") {
+    singlePlayerControls.classList.remove("hidden");
+    twoPlayerControls.classList.add("hidden");
+    // AI 모드로 적 설정
+    enemy.speed = 3;
+    enemy.jumpPower = 13;
+  } else {
+    singlePlayerControls.classList.add("hidden");
+    twoPlayerControls.classList.remove("hidden");
+    // 2P 모드로 적 설정 (플레이어와 동일한 능력)
+    enemy.speed = enemy.playerSpeed;
+    enemy.jumpPower = enemy.playerJumpPower;
+  }
+
+  initializeGame();
+}
+
+function showWinScreen(winner, finalScore) {
+  winScreen.classList.remove("hidden");
+  document.getElementById("winnerText").textContent = `승자: ${winner}!`;
+  document.getElementById(
+    "winScoreText"
+  ).textContent = `최종 점수: ${finalScore.player} - ${finalScore.enemy}`;
+  gameState.isGameRunning = false;
+}
+
+// 게임 초기화
+function initializeGame() {
+  gameState.playerScore = 0;
+  gameState.enemyScore = 0;
+  gameState.ballServe = "player";
+  gameState.isGameRunning = true;
+  gameState.winner = null;
+
+  // 플레이어 위치 리셋
+  player.x = 100;
+  player.y = GROUND_Y - player.height;
+  player.velocityX = 0;
+  player.velocityY = 0;
+  player.onGround = true;
+
+  // 적 위치 리셋
+  enemy.x = canvas.width - 160;
+  enemy.y = GROUND_Y - enemy.height;
+  enemy.velocityX = 0;
+  enemy.velocityY = 0;
+  enemy.onGround = true;
+  enemy.aiTimer = 0;
+
+  resetBall();
+  updateScore();
+}
+
+// 플레이어 업데이트 (1P)
 function updatePlayer() {
   // 좌우 이동
   if (keys["ArrowLeft"] && player.x > 0) {
@@ -123,8 +217,8 @@ function updatePlayer() {
   }
 }
 
-// AI 적 업데이트
-function updateEnemy() {
+// AI 적 업데이트 (1P 모드)
+function updateEnemyAI() {
   const ballDistance = Math.abs(ball.x - (enemy.x + enemy.width / 2));
   const ballOnEnemySide = ball.x > canvas.width / 2;
 
@@ -163,6 +257,33 @@ function updateEnemy() {
       enemy.velocityX *= 0.8;
     }
   }
+}
+
+// 2P 플레이어 업데이트 (2P 모드)
+function updateEnemyPlayer() {
+  // 좌우 이동 (A, D 키)
+  if (keys["a"] && enemy.x > canvas.width / 2 + 20) {
+    enemy.velocityX = -enemy.speed;
+  } else if (keys["d"] && enemy.x < canvas.width - enemy.width) {
+    enemy.velocityX = enemy.speed;
+  } else {
+    enemy.velocityX *= 0.8; // 마찰
+  }
+
+  // 점프 (W 키)
+  if (keys["w"] && enemy.onGround) {
+    enemy.velocityY = -enemy.jumpPower;
+    enemy.onGround = false;
+  }
+}
+
+// 적 업데이트 (모드에 따라 AI 또는 플레이어)
+function updateEnemy() {
+  if (gameMode === "singlePlayer") {
+    updateEnemyAI();
+  } else if (gameMode === "twoPlayer") {
+    updateEnemyPlayer();
+  }
 
   // 물리 적용
   enemy.x += enemy.velocityX;
@@ -198,12 +319,14 @@ function updateBall() {
     gameState.ballServe = "enemy";
     resetBall();
     updateScore();
+    checkWinCondition();
   } else if (ball.x >= canvas.width - ball.radius) {
     // 플레이어 득점
     gameState.playerScore++;
     gameState.ballServe = "player";
     resetBall();
     updateScore();
+    checkWinCondition();
   }
 
   // 천장 충돌
@@ -265,6 +388,23 @@ function checkBallPlayerCollision(playerObj) {
     const pushDistance = ball.radius + 30 - distance;
     ball.x += Math.cos(angle) * pushDistance;
     ball.y += Math.sin(angle) * pushDistance;
+  }
+}
+
+// 승리 조건 확인
+function checkWinCondition() {
+  if (gameState.playerScore >= WIN_SCORE) {
+    gameState.winner = "player";
+    showWinScreen("하치와레", {
+      player: gameState.playerScore,
+      enemy: gameState.enemyScore,
+    });
+  } else if (gameState.enemyScore >= WIN_SCORE) {
+    gameState.winner = "enemy";
+    showWinScreen("치이카와", {
+      player: gameState.playerScore,
+      enemy: gameState.enemyScore,
+    });
   }
 }
 
@@ -390,39 +530,35 @@ function render() {
 
 // 게임 루프
 function gameLoop() {
-  updatePlayer();
-  updateEnemy();
-  updateBall();
-  render();
+  if (gameState.isGameRunning) {
+    updatePlayer();
+    updateEnemy();
+    updateBall();
+  }
+
+  // 게임이 실행 중이거나 메뉴가 아닐 때만 렌더링
+  if (gameMode !== "menu") {
+    render();
+  }
+
   requestAnimationFrame(gameLoop);
 }
 
-// 게임 시작
-document.addEventListener("DOMContentLoaded", () => {
-  resetBall();
-  updateScore();
-  gameLoop();
-});
+// 이벤트 리스너 설정
+singlePlayerBtn.addEventListener("click", () => showGame("singlePlayer"));
+twoPlayerBtn.addEventListener("click", () => showGame("twoPlayer"));
+playAgainBtn.addEventListener("click", () => showGame(gameMode));
+backToMenuBtn.addEventListener("click", () => showMenu());
 
 // 게임 재시작 (R키)
 document.addEventListener("keydown", (e) => {
-  if (e.key === "r" || e.key === "R") {
-    gameState.playerScore = 0;
-    gameState.enemyScore = 0;
-    gameState.ballServe = "player";
-    resetBall();
-    updateScore();
-
-    // 플레이어 위치 리셋
-    player.x = 100;
-    player.y = GROUND_Y - player.height;
-    player.velocityX = 0;
-    player.velocityY = 0;
-
-    // 적 위치 리셋
-    enemy.x = canvas.width - 160;
-    enemy.y = GROUND_Y - enemy.height;
-    enemy.velocityX = 0;
-    enemy.velocityY = 0;
+  if ((e.key === "r" || e.key === "R") && gameState.isGameRunning) {
+    initializeGame();
   }
+});
+
+// 게임 시작
+document.addEventListener("DOMContentLoaded", () => {
+  showMenu();
+  gameLoop();
 });
