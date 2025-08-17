@@ -1,0 +1,5 @@
+# Build outputs (Maven)
+/target/
+
+# macOS metadata
+.DS_Store

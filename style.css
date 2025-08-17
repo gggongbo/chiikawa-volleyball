@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #87ceeb, #e0f6ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.game-container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#gameCanvas {
+  border: 3px solid #4caf50;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #87ceeb 0%, #98fb98 50%, #90ee90 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: block;
+  margin: 0 auto;
+}
+
+.controls {
+  margin-top: 15px;
+  color: #555;
+}
+
+.controls p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.controls p:first-child {
+  font-weight: bold;
+  color: #333;
+}
+
+#playerScore,
+#enemyScore {
+  font-weight: bold;
+  font-size: 18px;
+  color: #2196f3;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 850px) {
+  .game-container {
+    padding: 10px;
+  }
+
+  #gameCanvas {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
