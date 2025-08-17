@@ -37,9 +37,9 @@ const images = {
   ball: new Image(),
 };
 
-images.player.src = "public/images/hachiware.png";
-images.enemy.src = "public/images/chiikawa.png";
-images.ball.src = "public/images/ball.png";
+images.player.src = "images/hachiware.png";
+images.enemy.src = "images/chiikawa.png";
+images.ball.src = "images/ball.png";
 
 // 플레이어 객체
 const player = {
