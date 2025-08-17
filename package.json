@@ -1,0 +1,8 @@
+{
+  "name": "chiikawa-volleyball",
+  "version": "1.0.0",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo \"Enjoy Game~\""
+  }
+}
