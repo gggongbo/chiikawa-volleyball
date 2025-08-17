@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "build": "echo \"Enjoy Game~\""
+    "build": "echo \"Enjoy Game~\"",
+    "start": "open index.html"
   }
 }
