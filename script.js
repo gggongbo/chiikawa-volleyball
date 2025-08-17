@@ -7,7 +7,7 @@ const GRAVITY = 0.6;
 const GROUND_Y = canvas.height - 50;
 const NET_HEIGHT = 150;
 const BALL_BOUNCE = 0.8;
-const WIN_SCORE = 5;
+const WIN_SCORE_DIFFERENCE = 5;
 
 // 게임 상태 관리
 let gameMode = "menu"; // 'menu', 'singlePlayer', 'twoPlayer'
@@ -391,20 +391,26 @@ function checkBallPlayerCollision(playerObj) {
   }
 }
 
-// 승리 조건 확인
+// 승리 조건 확인 (5점차 이상으로 승리)
 function checkWinCondition() {
-  if (gameState.playerScore >= WIN_SCORE) {
-    gameState.winner = "player";
-    showWinScreen("하치와레", {
-      player: gameState.playerScore,
-      enemy: gameState.enemyScore,
-    });
-  } else if (gameState.enemyScore >= WIN_SCORE) {
-    gameState.winner = "enemy";
-    showWinScreen("치이카와", {
-      player: gameState.playerScore,
-      enemy: gameState.enemyScore,
-    });
+  const scoreDifference = Math.abs(
+    gameState.playerScore - gameState.enemyScore
+  );
+
+  if (scoreDifference >= WIN_SCORE_DIFFERENCE) {
+    if (gameState.playerScore > gameState.enemyScore) {
+      gameState.winner = "player";
+      showWinScreen("하치와레", {
+        player: gameState.playerScore,
+        enemy: gameState.enemyScore,
+      });
+    } else {
+      gameState.winner = "enemy";
+      showWinScreen("치이카와", {
+        player: gameState.playerScore,
+        enemy: gameState.enemyScore,
+      });
+    }
   }
 }
 
