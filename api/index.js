@@ -2,16 +2,28 @@ const express = require("express");
 const app = express();
 // const port = 3000;
 
-app.get("/api", (req, res) => {
-  console.error("hello world");
+// /api prefix 라우터 생성
+const apiRouter = express.Router();
+
+// 하위 라우트들
+apiRouter.get("/hello", (req, res) => {
+  console.log("hello world");
   res.send("Hello World!");
 });
 
-// 추가 경로 처리
-app.get("/api/hello", (req, res) => {
-  console.error("hello world");
-  res.send("Hello World!");
+apiRouter.get("/test", (req, res) => {
+  console.log("test api called");
+  res.json({ message: "Test API" });
 });
+
+// 기본 /api 경로
+apiRouter.get("/", (req, res) => {
+  console.log("api root called");
+  res.json({ message: "API Root" });
+});
+
+// /api prefix로 라우터 연결
+app.use("/api", apiRouter);
 
 module.exports = app;
 
