@@ -1,29 +1,30 @@
 const express = require("express");
 const app = express();
-// const port = 3000;
-
-// /api prefix 라우터 생성
-const apiRouter = express.Router();
-
-// 하위 라우트들
-apiRouter.get("/hello", (req, res) => {
-  console.log("hello world");
-  res.send("Hello World!");
-});
-
-apiRouter.get("/test", (req, res) => {
-  console.log("test api called");
-  res.json({ message: "Test API" });
-});
 
 // 기본 /api 경로
-apiRouter.get("/", (req, res) => {
+app.get("/", (req, res) => {
   console.log("api root called");
   res.json({ message: "API Root" });
 });
 
-// /api prefix로 라우터 연결
-app.use("/api", apiRouter);
+app.get("/hello", (req, res) => {
+  console.log("hello world");
+  res.send("Hello World!");
+});
+
+app.get("/test", (req, res) => {
+  console.log("test api called");
+  res.json({ message: "Test API" });
+});
+
+app.all("*", (req, res) => {
+  console.log(`Request to: ${req.url}`);
+  res.status(404).json({
+    error: "Not Found",
+    path: req.url,
+    method: req.method,
+  });
+});
 
 module.exports = app;
 
