@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 // 기본 /api 경로
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   console.log("api root called");
   res.json({ message: "API Root" });
 });
@@ -17,7 +17,7 @@ app.get("/test", (req, res) => {
   res.json({ message: "Test API" });
 });
 
-module.exports = app;
+export default app;
 
 // app.listen(port, () => {
 //   console.error(`서버가 http://localhost:${port} 에서 실행 중입니다`);
