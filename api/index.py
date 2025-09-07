@@ -23,11 +23,11 @@ api = Blueprint('api', __name__, url_prefix='/api')
 
 @api.route('/')
 def root():
-    return jsonify({"api test"})
+    return jsonify({"message": "api test"})
 
 @api.route('/hello')
 def hello():
-    return jsonify({"hello test"})
+    return jsonify({"message": "hello test"})
 
 ## api prefix 등록 (라우트 정의 이후에 등록해야 함)
 app.register_blueprint(api)    
