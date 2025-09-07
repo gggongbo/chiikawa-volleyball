@@ -7,7 +7,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API Root" });
 });
 
-app.get("/hello", (req, res) => {
+app.get("/api/hello", (req, res) => {
   console.log("hello world");
   res.send("Hello World!");
 });

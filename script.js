@@ -564,7 +564,10 @@ document.addEventListener("keydown", (e) => {
 });
 
 // 게임 시작
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("test test!");
+  const response = await fetch("/api/hello");
+  console.log("rr", response);
   showMenu();
   gameLoop();
 });
