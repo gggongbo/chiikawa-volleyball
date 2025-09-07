@@ -7,7 +7,7 @@
     }
   ],
   "functions": {
-    "api/index.py": {
+    "api/index.js": {
       "memory": 2048,
       "maxDuration": 120
     }
