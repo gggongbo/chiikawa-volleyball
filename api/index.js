@@ -17,15 +17,6 @@ app.get("/test", (req, res) => {
   res.json({ message: "Test API" });
 });
 
-app.all("*", (req, res) => {
-  console.log(`Request to: ${req.url}`);
-  res.status(404).json({
-    error: "Not Found",
-    path: req.url,
-    method: req.method,
-  });
-});
-
 module.exports = app;
 
 // app.listen(port, () => {
