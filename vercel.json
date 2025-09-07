@@ -3,7 +3,13 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": ["/api/$1"]
+      "dest": "/api/index.py"
     }
-  ]
+  ],
+  "functions": {
+    "api/index.py": {
+      "memory": 2048,
+      "maxDuration": 120
+    }
+  }
 }
