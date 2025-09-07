@@ -8,7 +8,7 @@ app.get("/api", (req, res) => {
 });
 
 // 추가 경로 처리
-app.get("/hello", (req, res) => {
+app.get("/api/hello", (req, res) => {
   console.error("hello world");
   res.send("Hello World!");
 });
