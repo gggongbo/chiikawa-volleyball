@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "build": "echo \"Enjoy Game~\"",
-    "start": "open index.html"
+    "start": "open index.html",
+    "start:server": "node api/index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }
