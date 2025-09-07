@@ -8,11 +8,6 @@ app.get("/api", (req, res) => {
   res.json({ message: "API Root" });
 });
 
-app.get("/api/hello", (req, res) => {
-  console.log("hello world");
-  res.send("Hello World!");
-});
-
 app.get("/test", (req, res) => {
   console.log("test api called");
   res.json({ message: "Test API" });
