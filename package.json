@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "build": "echo \"Enjoy Game~\"",
+    "dev": "concurrently \"node api/index.js\" \"vite --port 3000 --host\"",
+    "build": "vite build",
+    "preview": "concurrently \"node api/index.js\" \"vite preview\"",
     "install:python": "pip install -r requirements.txt || pip3 install -r requirements.txt",
     "start": "open index.html",
     "start:server": "python api/index.py || python3 api/index.py"
   },
   "dependencies": {
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "vite": "^7.1.5"
   }
 }
