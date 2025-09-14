@@ -1,5 +1,5 @@
 # Build outputs (Maven)
-/target/
+dist
 
 # macOS metadata
 .DS_Store
